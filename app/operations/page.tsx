@@ -113,6 +113,7 @@ export default function OperationsPage() {
                   <p className="mt-2 text-2xl font-semibold text-slate-950 dark:text-white">{inrFormatter.format((selectedProduct?.unitPrice ?? 0) * Number(qty || 0))}</p>
                 </div>
                 <Button
+                  className="w-full sm:w-auto"
                   loading={creating}
                   onClick={async () => {
                     await createPurchaseOrder({
@@ -146,6 +147,7 @@ export default function OperationsPage() {
                   <Input value={qty} onChange={(e) => setQty(e.target.value)} type="number" placeholder="Received qty" />
                 </div>
                 <Button
+                  className="w-full sm:w-auto"
                   loading={receiving}
                   onClick={async () => {
                     await receivePurchaseOrder({

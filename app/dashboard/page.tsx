@@ -129,7 +129,7 @@ export default function DashboardPage() {
                   onClick={() => router.push("/warehouses")}
                   className="w-full rounded-2xl border border-slate-200/80 bg-slate-50/90 p-4 text-left transition hover:border-brand-300 hover:bg-white dark:border-slate-800 dark:bg-slate-950/60 dark:hover:border-brand-700"
                 >
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="font-medium text-slate-900 dark:text-slate-100">{item.warehouseName}</p>
                       <p className="text-xs text-slate-500 dark:text-slate-400">{item.totalUnits.toLocaleString()} units</p>
@@ -155,7 +155,7 @@ export default function DashboardPage() {
             </div>
             <div className="mt-5 space-y-3">
               <p className="text-sm font-medium text-slate-200">Recent Receipts Trend</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {stats?.receiptsTrend.slice(-6).map((point) => (
                   <div key={point.label} className="rounded-2xl border border-white/10 bg-white/5 p-3">
                     <p className="text-xs text-slate-300">{point.label}</p>

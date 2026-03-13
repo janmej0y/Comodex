@@ -25,7 +25,7 @@ export default function PwaPage() {
         </Card>
 
         <Card className="space-y-3">
-          <Button onClick={() => pushToast({ title: "Install prompt unavailable", message: "Use browser install option for now.", tone: "info" })}>
+          <Button className="w-full sm:w-auto" onClick={() => pushToast({ title: "Install prompt unavailable", message: "Use browser install option for now.", tone: "info" })}>
             <Download className="h-4 w-4" />
             Install App
           </Button>

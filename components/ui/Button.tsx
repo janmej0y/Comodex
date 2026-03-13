@@ -25,7 +25,7 @@ export function Button({ className, variant = "primary", loading = false, childr
   return (
     <button
       className={cn(
-        "group relative inline-flex touch-manipulation items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-2 text-sm font-medium transition-[transform,filter,background-color,border-color,color,box-shadow] duration-120 hover:-translate-y-[1px] active:translate-y-0 outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 dark:focus-visible:ring-cyan-400 dark:focus-visible:ring-offset-slate-950",
+        "group relative inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 overflow-hidden rounded-xl px-3.5 py-2 text-[13px] font-medium transition-[transform,filter,background-color,border-color,color,box-shadow] duration-120 hover:-translate-y-[1px] active:translate-y-0 outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:px-4 sm:text-sm dark:focus-visible:ring-cyan-400 dark:focus-visible:ring-offset-slate-950",
         variants[variant],
         className
       )}

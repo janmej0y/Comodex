@@ -26,12 +26,12 @@ export default function IntegrationsPage() {
           {providers.map((provider) => (
             <Card key={provider}>
               <p className="font-medium text-slate-900 dark:text-slate-100">{provider}</p>
-              <div className="mt-2 flex gap-2">
-                <Button onClick={() => pushToast({ title: `${provider} connected`, message: "OAuth handshake simulated", tone: "success" })}>
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+                <Button className="w-full sm:w-auto" onClick={() => pushToast({ title: `${provider} connected`, message: "OAuth handshake simulated", tone: "success" })}>
                   <Link2 className="h-4 w-4" />
                   Connect
                 </Button>
-                <Button variant="secondary" onClick={() => pushToast({ title: `${provider} sync started`, message: "Background sync queued", tone: "info" })}>
+                <Button className="w-full sm:w-auto" variant="secondary" onClick={() => pushToast({ title: `${provider} sync started`, message: "Background sync queued", tone: "info" })}>
                   <RefreshCcw className="h-4 w-4" />
                   Sync
                 </Button>

@@ -24,12 +24,12 @@ export default function ScanPage() {
 
         <Card className="space-y-3">
           <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="Scan or enter code" />
-          <div className="flex gap-2">
-            <Button onClick={() => pushToast({ title: "Item detected", message: code, tone: "success" })}>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button className="w-full sm:w-auto" onClick={() => pushToast({ title: "Item detected", message: code, tone: "success" })}>
               <ScanLine className="h-4 w-4" />
               Scan Item
             </Button>
-            <Button variant="secondary" onClick={() => pushToast({ title: "Label generated", message: `QR created for ${code}`, tone: "info" })}>
+            <Button className="w-full sm:w-auto" variant="secondary" onClick={() => pushToast({ title: "Label generated", message: `QR created for ${code}`, tone: "info" })}>
               <QrCode className="h-4 w-4" />
               Generate Label
             </Button>

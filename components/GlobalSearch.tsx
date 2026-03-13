@@ -97,7 +97,7 @@ export default function GlobalSearch({ className }: { className?: string }) {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="flex h-12 min-w-0 flex-1 items-center rounded-2xl border border-white/80 bg-white/90 px-4 text-left text-slate-500 shadow-[0_22px_50px_-32px_rgba(15,23,42,0.35)] backdrop-blur-xl transition hover:border-brand-300 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:border-brand-700 dark:hover:text-slate-200"
+          className="hidden h-12 min-w-0 flex-1 items-center rounded-2xl border border-white/80 bg-white/90 px-4 text-left text-slate-500 shadow-[0_22px_50px_-32px_rgba(15,23,42,0.35)] backdrop-blur-xl transition hover:border-brand-300 hover:text-slate-700 sm:flex dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:border-brand-700 dark:hover:text-slate-200"
         >
           <span className="truncate">Search products, categories, recent actions</span>
         </button>
@@ -114,7 +114,7 @@ export default function GlobalSearch({ className }: { className?: string }) {
               onClick={() => setIsOpen(false)}
             />
             <motion.div
-              className="fixed inset-x-4 top-20 z-50 mx-auto w-full max-w-2xl overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/95 shadow-[0_36px_90px_-42px_rgba(15,23,42,0.55)] backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-900/95"
+              className="fixed inset-x-3 top-16 z-50 mx-auto w-auto max-w-2xl overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/95 shadow-[0_36px_90px_-42px_rgba(15,23,42,0.55)] backdrop-blur-2xl sm:inset-x-4 sm:top-20 sm:w-full sm:rounded-[1.75rem] dark:border-slate-800 dark:bg-slate-900/95"
               initial={{ opacity: 0, y: 12, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.98 }}

@@ -25,17 +25,17 @@ export default function CollaborationPage() {
 
         <Card className="space-y-3">
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Write note..." />
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={() => pushToast({ title: "Comment posted", message: note, tone: "success" })}>
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <Button className="w-full sm:w-auto" onClick={() => pushToast({ title: "Comment posted", message: note, tone: "success" })}>
               <MessageSquare className="h-4 w-4" />
               Post Comment
             </Button>
-            <Button variant="secondary" onClick={() => pushToast({ title: "Task assigned", message: "Manager notified", tone: "info" })}>
+            <Button className="w-full sm:w-auto" variant="secondary" onClick={() => pushToast({ title: "Task assigned", message: "Manager notified", tone: "info" })}>
               <UserPlus className="h-4 w-4" />
               Assign to Manager
             </Button>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Badge>@operations-team</Badge>
             <Badge>Open Task: 6</Badge>
           </div>

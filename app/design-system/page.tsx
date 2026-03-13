@@ -43,12 +43,12 @@ export default function DesignSystemPage() {
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="space-y-3">
             <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">Buttons</p>
-              <div className="flex flex-wrap gap-2">
-                <Button onClick={() => setClicks((prev) => prev + 1)}>Primary</Button>
-                <Button variant="secondary" onClick={() => setClicks((prev) => prev + 1)}>Secondary</Button>
-                <Button variant="ghost" onClick={() => setClicks((prev) => prev + 1)}>Ghost</Button>
-                <Button variant="danger" onClick={() => setClicks((prev) => prev + 1)}>Danger</Button>
-                <Button variant="secondary" onClick={() => pushToast({ title: "State demo", message: "All buttons are active in this lab.", tone: "info" })}>
+              <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+                <Button className="w-full" onClick={() => setClicks((prev) => prev + 1)}>Primary</Button>
+                <Button className="w-full" variant="secondary" onClick={() => setClicks((prev) => prev + 1)}>Secondary</Button>
+                <Button className="w-full" variant="ghost" onClick={() => setClicks((prev) => prev + 1)}>Ghost</Button>
+                <Button className="w-full" variant="danger" onClick={() => setClicks((prev) => prev + 1)}>Danger</Button>
+                <Button className="w-full sm:col-span-2 xl:col-span-1" variant="secondary" onClick={() => pushToast({ title: "State demo", message: "All buttons are active in this lab.", tone: "info" })}>
                   State Demo
                 </Button>
               </div>
@@ -75,7 +75,7 @@ export default function DesignSystemPage() {
             >
               <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{previewText}</p>
               <p className="text-sm text-slate-500 dark:text-slate-400">Typography and spacing preview block.</p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Badge>brand-500</Badge>
                 <Badge>radius-xl</Badge>
                 <Badge>shadow-soft</Badge>

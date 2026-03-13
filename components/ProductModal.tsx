@@ -176,7 +176,7 @@ export default function ProductModal({ product, isOpen, onClose, onSubmit }: Pro
             role="dialog"
             aria-modal="true"
             aria-label={product ? "Edit product" : "Add product"}
-            className="fixed right-0 top-0 z-50 h-full w-full max-w-xl border-l border-white/20 bg-white/80 p-6 shadow-2xl backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/80"
+            className="fixed right-0 top-0 z-50 h-full w-full max-w-xl overflow-y-auto border-l border-white/20 bg-white/80 p-4 shadow-2xl backdrop-blur-xl sm:p-6 dark:border-slate-700 dark:bg-slate-900/80"
             initial={reduceMotion ? false : { x: "100%" }}
             animate={reduceMotion ? { opacity: 1 } : { x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { x: "100%" }}

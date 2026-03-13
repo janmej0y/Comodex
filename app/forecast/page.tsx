@@ -55,12 +55,13 @@ export default function ForecastPage() {
         <Card className="space-y-2">
           <p className="text-sm font-medium text-slate-700 dark:text-slate-200">What-if Simulation</p>
           <p className="text-sm text-slate-500 dark:text-slate-400">Scenario: +15% demand growth in top category.</p>
-          <div className="flex gap-2">
-            <Button onClick={() => pushToast({ title: "Simulation complete", message: `Scenario run for ${range}`, tone: "success" })}>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button className="w-full sm:w-auto" onClick={() => pushToast({ title: "Simulation complete", message: `Scenario run for ${range}`, tone: "success" })}>
               <TrendingUp className="h-4 w-4" />
               Run Simulation
             </Button>
             <Button
+              className="w-full sm:w-auto"
               variant="secondary"
               onClick={() => pushToast({ title: "Plan applied", message: "Reorder plan staged to operations", tone: "info" })}
             >

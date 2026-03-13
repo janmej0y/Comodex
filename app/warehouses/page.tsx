@@ -123,6 +123,7 @@ export default function WarehousesPage() {
               <Input type="number" value={qty} onChange={(e) => setQty(e.target.value)} placeholder="Quantity" />
             </div>
             <Button
+              className="w-full sm:w-auto"
               loading={transferring}
               onClick={async () => {
                 await transferStock({ variables: { input: { productId: sku, fromWarehouseId: from, toWarehouseId: to, quantity: Number(qty), reason: "Rebalance transfer" } } });

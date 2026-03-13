@@ -14,7 +14,7 @@ export function TableRoot({ className, ...props }: HTMLAttributes<HTMLDivElement
 }
 
 export function Table({ className, ...props }: HTMLAttributes<HTMLTableElement>) {
-  return <table className={cn("w-full min-w-[980px] text-left", className)} {...props} />;
+  return <table className={cn("w-full min-w-[760px] text-left lg:min-w-[980px]", className)} {...props} />;
 }
 
 export function Th({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) {

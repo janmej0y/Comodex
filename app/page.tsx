@@ -119,21 +119,21 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="relative w-full max-w-md rounded-3xl border border-white/70 bg-white/75 p-8 shadow-soft backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/75"
+        className="relative w-full max-w-md rounded-[1.8rem] border border-white/70 bg-white/75 p-5 shadow-soft backdrop-blur-xl sm:rounded-3xl sm:p-8 dark:border-slate-800 dark:bg-slate-900/75"
       >
-        <div className="mb-8 flex items-start justify-between">
-          <div>
+        <div className="mb-6 flex items-start justify-between gap-3 sm:mb-8">
+          <div className="min-w-0">
             <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
               <ShieldCheck className="h-3.5 w-3.5" />
               Secure Access
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Comodex Login</h1>
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl dark:text-slate-100">Comodex Login</h1>
             <p className="text-sm text-slate-500 dark:text-slate-400">Role-aware access for commodities operations.</p>
           </div>
           <Button
             variant="secondary"
             onClick={toggleTheme}
-            className="px-3 py-2 text-xs"
+            className="shrink-0 px-3 py-2 text-xs"
           >
             {theme === "dark" ? "Light" : "Dark"}
           </Button>
@@ -216,7 +216,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">
+        <p className="mt-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400 sm:mt-5">
           {mode === "signup"
             ? "Create a manager or store keeper account first, then sign in."
             : "Tip: press Enter to sign in quickly. Demo password: `password123`."}

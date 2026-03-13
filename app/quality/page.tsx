@@ -28,11 +28,11 @@ export default function QualityPage() {
             <Badge>axe-core</Badge>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
-            <Button onClick={() => pushToast({ title: "Unit tests queued", message: "Vitest run started", tone: "info" })}>Run Unit Tests</Button>
-            <Button variant="secondary" onClick={() => pushToast({ title: "E2E suite queued", message: "Playwright run started", tone: "info" })}>
+            <Button className="w-full" onClick={() => pushToast({ title: "Unit tests queued", message: "Vitest run started", tone: "info" })}>Run Unit Tests</Button>
+            <Button className="w-full" variant="secondary" onClick={() => pushToast({ title: "E2E suite queued", message: "Playwright run started", tone: "info" })}>
               Run E2E Suite
             </Button>
-            <Button variant="secondary" onClick={() => pushToast({ title: "Visual diff queued", message: "Snapshot comparison started", tone: "info" })}>
+            <Button className="w-full" variant="secondary" onClick={() => pushToast({ title: "Visual diff queued", message: "Snapshot comparison started", tone: "info" })}>
               Run Visual Diff
             </Button>
           </div>

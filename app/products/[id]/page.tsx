@@ -89,8 +89,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     <ProtectedRoute roles={[Role.MANAGER, Role.STORE_KEEPER]}>
       <AppShell>
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Button variant="secondary" onClick={() => history.back()}>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <Button className="w-full sm:w-auto" variant="secondary" onClick={() => history.back()}>
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
@@ -115,8 +115,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             <>
               <div className="grid gap-4 xl:grid-cols-3">
                 <Card className="overflow-hidden md:col-span-2">
-                  <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-                    <div className="relative min-h-[280px] overflow-hidden rounded-[1.6rem] border border-slate-200/80 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.92),rgba(226,232,240,0.72))] dark:border-slate-800 dark:bg-[radial-gradient(circle_at_top,rgba(30,41,59,0.88),rgba(2,6,23,0.92))]">
+                  <div className="grid gap-4 sm:gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+                    <div className="relative min-h-[220px] overflow-hidden rounded-[1.35rem] border border-slate-200/80 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.92),rgba(226,232,240,0.72))] sm:min-h-[280px] sm:rounded-[1.6rem] dark:border-slate-800 dark:bg-[radial-gradient(circle_at_top,rgba(30,41,59,0.88),rgba(2,6,23,0.92))]">
                       <Image
                         src={productImage}
                         alt={product.name}
@@ -130,14 +130,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                         <p className="mt-1 text-sm font-medium text-slate-900 dark:text-slate-100">{product.category}</p>
                       </div>
                     </div>
-                    <div>
-                  <div className="flex items-center justify-between">
-                    <div>
+                    <div className="min-w-0">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
                       <p className="text-xs uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Product Profile</p>
-                      <h2 className="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{product.name}</h2>
+                      <h2 className="mt-1 text-xl font-semibold text-slate-900 sm:text-2xl dark:text-slate-100">{product.name}</h2>
                       <p className="text-sm text-slate-500 dark:text-slate-400">{product.id}</p>
                     </div>
-                    <Badge>{product.category}</Badge>
+                    <Badge className="w-fit">{product.category}</Badge>
                   </div>
                   <div className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
                     <div>

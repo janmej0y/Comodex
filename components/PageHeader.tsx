@@ -11,11 +11,11 @@ export default function PageHeader({
 }) {
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-white/60 bg-white/80 p-4 shadow-soft backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/70 md:flex-row md:items-center md:justify-between">
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{title}</h2>
+      <div className="min-w-0">
+        <h2 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-2xl">{title}</h2>
         <p className="text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>
       </div>
-      {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
+      {actions ? <div className="flex w-full flex-wrap gap-2 md:w-auto md:justify-end">{actions}</div> : null}
     </div>
   );
 }

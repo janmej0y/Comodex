@@ -34,7 +34,7 @@ export default function LocalizationPage() {
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
           </Select>
-          <Button onClick={() => pushToast({ title: "Locale policy updated", message: `${locale} / ${currency}`, tone: "success" })}>
+          <Button className="w-full md:w-auto" onClick={() => pushToast({ title: "Locale policy updated", message: `${locale} / ${currency}`, tone: "success" })}>
             Apply Locale Policy
           </Button>
           <p className="text-sm text-slate-500 dark:text-slate-400 md:col-span-3">

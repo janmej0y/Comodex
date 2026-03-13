@@ -24,9 +24,9 @@ export default function PermissionsPage() {
 
         <Card className="space-y-2">
           {permissions.map((row) => (
-            <div key={row.feature} className="flex flex-wrap items-center justify-between rounded-xl border border-slate-200 p-3 dark:border-slate-800">
+            <div key={row.feature} className="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between dark:border-slate-800">
               <p className="text-sm text-slate-900 dark:text-slate-100">{row.feature}</p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Badge className={row.manager ? "" : "opacity-50"}>Manager {row.manager ? "Allow" : "Deny"}</Badge>
                 <Badge className={row.keeper ? "" : "opacity-50"}>Store Keeper {row.keeper ? "Allow" : "Deny"}</Badge>
               </div>
