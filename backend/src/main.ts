@@ -4,6 +4,7 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const port = Number(process.env.PORT ?? 4000);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -18,8 +19,8 @@ async function bootstrap() {
     credentials: true
   });
 
-  await app.listen(4000);
-  console.log("Backend running at http://localhost:4000/graphql");
+  await app.listen(port);
+  console.log(`Backend running at http://localhost:${port}/graphql`);
 }
 
 bootstrap();
