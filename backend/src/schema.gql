@@ -1,0 +1,94 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AdjustStockInput {
+  delta: Int!
+  productId: String!
+  reason: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: UserModel!
+}
+
+type DashboardStatsModel {
+  lowInventory: Int!
+  marketValue: Float!
+  totalStock: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+  role: Role!
+}
+
+enum MovementType {
+  ADJUSTMENT
+  IN
+  OUT
+}
+
+type Mutation {
+  adjustStock(input: AdjustStockInput!): ProductModel!
+  login(input: LoginInput!): AuthPayload!
+  upsertProduct(input: UpsertProductInput!): ProductModel!
+}
+
+type ProductModel {
+  category: String!
+  id: String!
+  name: String!
+  quantity: Float!
+  unitPrice: Float!
+  updatedAt: DateTime!
+}
+
+type ProductMovementModel {
+  createdAt: DateTime!
+  id: String!
+  productId: String!
+  quantity: Float!
+  reason: String!
+  type: MovementType!
+}
+
+type ProductTrendPointModel {
+  label: String!
+  value: Int!
+}
+
+type Query {
+  dashboardStats: DashboardStatsModel!
+  product(id: String!): ProductModel
+  productMovements(productId: String!): [ProductMovementModel!]!
+  productTrend(productId: String!): [ProductTrendPointModel!]!
+  products: [ProductModel!]!
+}
+
+enum Role {
+  MANAGER
+  STORE_KEEPER
+}
+
+input UpsertProductInput {
+  category: String!
+  id: String!
+  name: String!
+  quantity: Int!
+  unitPrice: Float!
+}
+
+type UserModel {
+  email: String!
+  id: String!
+  name: String!
+  role: Role!
+}
