@@ -76,6 +76,7 @@ export const GET_PRODUCTS = gql`
       id
       name
       category
+      imageUrl
       unitPrice
       quantity
       reorderLevel
@@ -97,6 +98,7 @@ export const GET_PRODUCT = gql`
       id
       name
       category
+      imageUrl
       unitPrice
       quantity
       reorderLevel
@@ -200,6 +202,7 @@ export const GET_PROCUREMENT = gql`
       id
       name
       category
+      imageUrl
       unitPrice
       quantity
       reorderLevel
@@ -259,6 +262,7 @@ export const UPSERT_PRODUCT = gql`
       id
       name
       category
+      imageUrl
       unitPrice
       quantity
       reorderLevel
@@ -280,6 +284,7 @@ export const ADJUST_STOCK = gql`
       id
       name
       category
+      imageUrl
       unitPrice
       quantity
       reorderLevel

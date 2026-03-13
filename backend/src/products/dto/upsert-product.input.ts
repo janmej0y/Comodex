@@ -15,6 +15,11 @@ export class UpsertProductInput {
   @IsString()
   category!: string;
 
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  imageUrl?: string;
+
   @Field(() => Float)
   @IsNumber()
   @IsPositive()

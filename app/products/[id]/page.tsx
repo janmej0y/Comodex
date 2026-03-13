@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useMutation, useQuery } from "@apollo/client";
 import { ArrowLeft, ArrowUpRight, Boxes, TrendingUp } from "lucide-react";
 import AppShell from "@/components/AppShell";
@@ -14,6 +15,7 @@ import { Input } from "@/components/ui/Input";
 import { useAuth } from "@/lib/auth-context";
 import { normalizeError, reportError } from "@/lib/error-utils";
 import { ADJUST_STOCK, GET_PRODUCT, GET_PRODUCT_MOVEMENTS, GET_PRODUCT_TREND } from "@/lib/graphql";
+import { getProductImage } from "@/lib/product-media";
 import { useToast } from "@/lib/toast-context";
 import { dateFormatter, inrFormatter } from "@/lib/utils";
 import { Role } from "@/types/auth";
@@ -66,6 +68,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const product = productData?.product;
   const trend = trendData?.productTrend ?? [];
   const movements = movementsData?.productMovements ?? [];
+  const productImage = product?.imageUrl || (product ? getProductImage(product.id) : "/products/default-product.svg");
 
   const pathD = useMemo(() => {
     if (!trend.length) {
@@ -111,7 +114,23 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           ) : (
             <>
               <div className="grid gap-4 xl:grid-cols-3">
-                <Card className="md:col-span-2">
+                <Card className="overflow-hidden md:col-span-2">
+                  <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+                    <div className="relative min-h-[280px] overflow-hidden rounded-[1.6rem] border border-slate-200/80 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.92),rgba(226,232,240,0.72))] dark:border-slate-800 dark:bg-[radial-gradient(circle_at_top,rgba(30,41,59,0.88),rgba(2,6,23,0.92))]">
+                      <Image
+                        src={productImage}
+                        alt={product.name}
+                        fill
+                        priority
+                        className="object-cover"
+                        sizes="(max-width: 1280px) 100vw, 40vw"
+                      />
+                      <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/70 bg-white/70 px-4 py-3 backdrop-blur-lg dark:border-slate-700 dark:bg-slate-900/70">
+                        <p className="text-xs uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Visual Reference</p>
+                        <p className="mt-1 text-sm font-medium text-slate-900 dark:text-slate-100">{product.category}</p>
+                      </div>
+                    </div>
+                    <div>
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Product Profile</p>
@@ -132,6 +151,19 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                     <div>
                       <p className="text-slate-500 dark:text-slate-400">Value</p>
                       <p className="font-semibold text-slate-900 dark:text-slate-100">{inrFormatter.format(product.quantity * product.unitPrice)}</p>
+                    </div>
+                  </div>
+                    <div className="mt-5 rounded-2xl border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-800 dark:bg-slate-950/60">
+                      <p className="text-xs uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Warehouse Distribution</p>
+                      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                        {product.balances.slice(0, 4).map((balance) => (
+                          <div key={balance.warehouseId} className="rounded-xl border border-slate-200/70 bg-white/90 px-3 py-3 dark:border-slate-800 dark:bg-slate-900/70">
+                            <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{balance.warehouseName}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">{balance.quantity} units</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                     </div>
                   </div>
                 </Card>

@@ -1,74 +1,61 @@
 # Comodex
 
-Comodex is a full-stack commodities and inventory management workspace. It contains:
+<div align="center">
 
-- a `Next.js 14` frontend for operations, analytics, and inventory workflows
-- a `NestJS + GraphQL + Prisma` backend for authentication, products, dashboard metrics, and RBAC
+### Executive-grade commodities management platform for modern inventory teams
 
-The project is structured so the frontend can run either:
+![Next.js](https://img.shields.io/badge/Next.js_14-App_Router-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Utility_First-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Apollo Client](https://img.shields.io/badge/Apollo-GraphQL-311C87?style=for-the-badge&logo=apollographql&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-Backend-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
-- against the real backend through `NEXT_PUBLIC_GRAPHQL_URL`
-- or against the built-in Apollo mock layer for UI-only work
+</div>
 
-## Product Goal
+## Overview
 
-Comodex is designed for commodity and stock management teams that need:
+Comodex is a full-stack inventory and commodities operations system built for two core roles:
 
-- product visibility
-- inventory updates
-- low-stock monitoring
-- role-based access control
-- an executive dashboard for managers
+- `MANAGER`
+- `STORE_KEEPER`
 
-## Roles and Access Rules
+It combines a premium, responsive Next.js frontend with a NestJS + GraphQL + Prisma backend. The app supports authentication, RBAC, real inventory workflows, procurement, warehouse insights, audit trails, alerts, and a manager-only dashboard.
 
-There are two roles in the system:
+## Highlights ?
 
-### `MANAGER`
+- ?? Signup-first authentication with JWT + refresh token flow
+- ??? Role-based access control on both frontend and backend
+- ?? Product inventory management with add/edit and stock adjustments
+- ??? Optional product image upload with preview support
+- ?? Multi-warehouse stock model with warehouse balances
+- ?? Real stock ledger and audit trail
+- ?? Purchase orders and goods receipt workflows
+- ?? Low-stock alerts engine
+- ?? Manager-only dashboard with aggregated analytics
+- ?? Persistent light/dark mode with light mode as default
+- ?? Responsive UI optimized for desktop and mobile
+- ?? Dual-layer error handling for users and developers
+- ?? Automated smoke tests for frontend and backend architecture
 
-Allowed to:
+## Role Access Matrix
 
-- log in
-- view all products
-- add or edit products
-- adjust stock
-- view the dashboard
+| Feature | Manager | Store Keeper |
+| --- | --- | --- |
+| Sign up | Yes | Yes |
+| Sign in | Yes | Yes |
+| View products | Yes | Yes |
+| Add product | Yes | Yes |
+| Edit product | Yes | Yes |
+| Upload product image | Yes | Yes |
+| Adjust stock | Yes | Yes |
+| View dashboard | Yes | No |
+| Access manager-only analytics surfaces | Yes | No |
 
-### `STORE_KEEPER`
+## Tech Stack ??
 
-Allowed to:
-
-- log in
-- view all products
-- add or edit products
-- adjust stock
-
-Restricted from:
-
-- dashboard access
-
-Frontend route protection is handled in the UI layer, and backend resolver protection enforces the same rules server-side.
-
-## Architecture
-
-## High-Level Layout
-
-```text
-comodex/
-â”œâ”€ app/                  # Next.js App Router frontend
-â”œâ”€ components/           # Reusable UI and layout components
-â”œâ”€ lib/                  # Apollo client, auth context, theme, helpers
-â”œâ”€ types/                # Shared frontend types
-â”œâ”€ backend/              # NestJS GraphQL API + Prisma
-â”‚  â”œâ”€ prisma/            # Prisma schema and seed
-â”‚  â””â”€ src/               # Modules, resolvers, guards, services
-â”œâ”€ package.json          # Frontend scripts
-â””â”€ README.md
-```
-
-## Frontend Architecture
-
-Frontend stack:
+### Frontend
 
 - `Next.js 14` App Router
 - `React 18`
@@ -76,316 +63,478 @@ Frontend stack:
 - `Tailwind CSS`
 - `Apollo Client`
 - `Framer Motion`
+- `Lucide React`
 
-Core frontend responsibilities:
-
-- session handling and client-side role awareness
-- protected navigation
-- inventory management UI
-- dashboard UI for managers
-- form validation and user-safe error handling
-- responsive layouts for desktop and mobile
-
-Important frontend files:
-
-- [app/page.tsx](c:/Users/Main/Desktop/Comodex/app/page.tsx): login screen
-- [app/dashboard/page.tsx](c:/Users/Main/Desktop/Comodex/app/dashboard/page.tsx): manager dashboard
-- [app/products/page.tsx](c:/Users/Main/Desktop/Comodex/app/products/page.tsx): products workspace
-- [app/products/[id]/page.tsx](c:/Users/Main/Desktop/Comodex/app/products/[id]/page.tsx): product detail
-- [components/ProtectedRoute.tsx](c:/Users/Main/Desktop/Comodex/components/ProtectedRoute.tsx): route guard
-- [components/Sidebar.tsx](c:/Users/Main/Desktop/Comodex/components/Sidebar.tsx): role-driven navigation
-- [lib/auth-context.tsx](c:/Users/Main/Desktop/Comodex/lib/auth-context.tsx): auth/session brain
-- [lib/apollo-client.ts](c:/Users/Main/Desktop/Comodex/lib/apollo-client.ts): Apollo setup, mock link, auth header, error link
-- [lib/graphql.ts](c:/Users/Main/Desktop/Comodex/lib/graphql.ts): GraphQL operations
-- [lib/error-utils.ts](c:/Users/Main/Desktop/Comodex/lib/error-utils.ts): developer-safe and user-safe error normalization
-
-## Backend Architecture
-
-Backend stack:
+### Backend
 
 - `NestJS`
 - `GraphQL`
 - `Prisma`
-- `JWT` authentication
+- `PostgreSQL`
+- `JWT`
 - `Passport`
+- `class-validator`
+- `bcryptjs`
 
-Core backend responsibilities:
+## Architecture ???
 
-- user login
-- JWT issuing
-- current-user authentication
-- role-based resolver protection
-- product read/write operations
-- dashboard aggregation for managers
+```text
+Comodex/
++- app/                    # Next.js App Router pages
++- components/             # Reusable UI, layout, guards, modals
++- lib/                    # Apollo, auth, theme, utils, telemetry, errors
++- public/                 # Static assets and sample product media
++- tests/                  # Frontend smoke tests
++- types/                  # Frontend domain types
++- backend/
+¦  +- prisma/              # Prisma schema, migrations, seed
+¦  +- src/
+¦  ¦  +- auth/             # Signup, login, refresh, logout
+¦  ¦  +- dashboard/        # Manager analytics
+¦  ¦  +- products/         # Inventory, warehouses, stock transfers
+¦  ¦  +- procurement/      # Purchase orders and receipts
+¦  ¦  +- alerts/           # Alert rules and low-stock alerts
+¦  ¦  +- audit/            # Audit trail
+¦  ¦  +- common/           # Guards, decorators, shared auth logic
+¦  ¦  +- prisma/           # Prisma service
+¦  +- test/                # Backend architecture smoke tests
++- README.md
+```
 
-Important backend files:
+## Frontend Architecture
 
-- [backend/src/app.module.ts](c:/Users/Main/Desktop/Comodex/backend/src/app.module.ts): root module
-- [backend/src/main.ts](c:/Users/Main/Desktop/Comodex/backend/src/main.ts): bootstrap
-- [backend/src/auth/auth.module.ts](c:/Users/Main/Desktop/Comodex/backend/src/auth/auth.module.ts): auth module
-- [backend/src/auth/auth.resolver.ts](c:/Users/Main/Desktop/Comodex/backend/src/auth/auth.resolver.ts): login mutation
-- [backend/src/auth/auth.service.ts](c:/Users/Main/Desktop/Comodex/backend/src/auth/auth.service.ts): token and login logic
-- [backend/src/products/products.resolver.ts](c:/Users/Main/Desktop/Comodex/backend/src/products/products.resolver.ts): product queries/mutations
-- [backend/src/products/products.service.ts](c:/Users/Main/Desktop/Comodex/backend/src/products/products.service.ts): product persistence logic
-- [backend/src/dashboard/dashboard.resolver.ts](c:/Users/Main/Desktop/Comodex/backend/src/dashboard/dashboard.resolver.ts): manager-only metrics
-- [backend/src/common/guards/gql-auth.guard.ts](c:/Users/Main/Desktop/Comodex/backend/src/common/guards/gql-auth.guard.ts): GraphQL auth guard
-- [backend/src/common/guards/roles.guard.ts](c:/Users/Main/Desktop/Comodex/backend/src/common/guards/roles.guard.ts): RBAC guard
-- [backend/prisma/schema.prisma](c:/Users/Main/Desktop/Comodex/backend/prisma/schema.prisma): data model
-- [backend/prisma/seed.ts](c:/Users/Main/Desktop/Comodex/backend/prisma/seed.ts): sample users and products
+### Core files
 
-## Authentication and RBAC Flow
+- `app/page.tsx`: signup/signin entry flow
+- `app/dashboard/page.tsx`: manager-only analytics dashboard
+- `app/products/page.tsx`: inventory management workspace
+- `app/products/[id]/page.tsx`: product detail, image, movements, trend, quick actions
+- `components/ProductModal.tsx`: add/edit product flow with optional image upload
+- `components/ProtectedRoute.tsx`: client-side RBAC route guard
+- `components/Sidebar.tsx`: role-aware sidebar navigation
+- `components/AppShell.tsx`: main shell, responsive layout, mobile menu
+- `components/GlobalSearch.tsx`: command-palette style search overlay
+- `lib/auth-context.tsx`: session bootstrapping, signup/login/logout/refresh
+- `lib/apollo-client.ts`: Apollo config, auth headers, mock backend, error link
+- `lib/graphql.ts`: frontend GraphQL operations
+- `lib/theme-context.tsx`: persistent theme engine
+- `lib/error-utils.ts`: normalized user-safe and developer-safe error handling
 
-### Frontend
+### Frontend design principles
 
-1. User submits login form.
-2. Apollo executes the login mutation.
-3. Frontend stores the session token and role.
-4. Sidebar and route access are derived from `user.role`.
-5. Protected pages skip protected queries until auth bootstrap is complete.
+- premium UI with elevated cards, gradients, and strong spacing
+- fast-feeling interactions with reduced artificial delays
+- mobile-first handling for products and navigation
+- light mode by default, dark mode persisted when explicitly selected
+- role-based UI hiding, disabling, and route protection
 
-### Backend
+## Backend Architecture
 
-1. Login mutation validates credentials.
-2. Backend signs a JWT containing user identity and role.
-3. GraphQL auth guard extracts and verifies the token.
-4. Roles guard enforces resolver-level access.
+### Core modules
 
-### Enforcement Model
+- `auth`: signup, login, refresh token rotation, logout
+- `products`: products, warehouse balances, stock adjustments, transfers, product trend
+- `dashboard`: aggregated manager analytics
+- `procurement`: purchase orders and goods receipts
+- `alerts`: alert rules and low-stock alerts
+- `audit`: immutable event feed
+- `common`: guards, decorators, RBAC utilities
+- `prisma`: Prisma client integration
 
-- `dashboard` queries require `MANAGER`
-- `products` queries and mutations allow both `MANAGER` and `STORE_KEEPER`
+### Data model includes
 
-## Feature Summary
+- `User`
+- `RefreshToken`
+- `Warehouse`
+- `Product`
+- `InventoryBalance`
+- `StockLedger`
+- `StockTransfer`
+- `PurchaseOrder`
+- `PurchaseOrderLine`
+- `GoodsReceipt`
+- `GoodsReceiptLine`
+- `AlertRule`
+- `AuditEvent`
 
-### Core implemented features
+## Authentication Flow ??
 
-- login with role-based session
-- protected routes
-- manager dashboard
-- products listing
-- add/edit product flow
-- stock adjustments
-- mobile-friendly product cards
-- light/dark theme
-- toasts and interaction feedback
-- user-facing and developer-facing error handling
+### Signup-first flow
 
-### Extended frontend modules
+1. User creates an account with name, email, password, and role.
+2. User signs in using email and password.
+3. Backend returns:
+   - access token
+   - refresh token
+   - current user profile
+4. Frontend stores session data and bootstraps protected pages.
+5. Dashboard access is granted only if `role === MANAGER`.
 
-The frontend also includes UI modules for future backend expansion:
+### Backend enforcement
 
-- `/warehouses`
-- `/operations`
-- `/alerts`
-- `/forecast`
-- `/audit`
-- `/media`
-- `/scan`
-- `/permissions`
-- `/localization`
-- `/collaboration`
-- `/analytics`
-- `/integrations`
-- `/release-controls`
-- `/quality`
-- `/pwa`
-- `/design-system`
+- GraphQL queries and mutations are protected with JWT guards.
+- REST routes are protected with HTTP JWT guards.
+- Manager-only operations are role-gated in backend modules.
 
-These are frontend modules intended to be wired to additional backend domains later.
+## API Surface
 
-## Data and API Design
+### GraphQL
 
-The frontend is already structured around GraphQL operations for:
+Main operations are defined in `lib/graphql.ts` and served by the NestJS backend:
 
-- login
-- product list
-- product detail
-- product upsert
-- stock adjustment
-- dashboard summary
+#### Auth
 
-This makes the UI portable between:
+- `signup`
+- `login`
+- `refreshSession`
+- `logout`
 
-- the built-in mock GraphQL layer
-- the real NestJS GraphQL backend
+#### Dashboard
 
-## Getting Started
+- `dashboardStats`
 
-## Prerequisites
+#### Products and inventory
 
-- Node.js 18+
-- npm
+- `products`
+- `product(id)`
+- `upsertProduct`
+- `adjustStock`
+- `transferStock`
+- `productMovements`
+- `productTrend`
+- `warehouses`
+- `stockTransfers`
 
-## 1. Install frontend dependencies
+#### Procurement
+
+- `purchaseOrders`
+- `goodsReceipts`
+- `createPurchaseOrder`
+- `receivePurchaseOrder`
+
+#### Alerts and audit
+
+- `alertRules`
+- `lowStockAlerts`
+- `saveAlertRule`
+- `auditTrail`
+
+### REST
+
+The backend also exposes practical REST endpoints alongside GraphQL:
+
+- `POST /auth/signup`
+- `POST /auth/login`
+- `POST /auth/refresh`
+- `POST /auth/logout`
+- `GET /products`
+- `POST /products`
+- `PUT /products/:id`
+- `POST /products/:id/adjust`
+
+## Product Images ???
+
+Comodex now supports optional product images in the add/edit product flow.
+
+### Current implementation
+
+- users can upload an image file in the product modal
+- image upload is optional
+- users can also paste an image URL manually
+- a preview is shown before save
+- the image is persisted as `imageUrl`
+- product detail pages prefer uploaded images and fall back to sample product artwork if no image exists
+
+### Current storage behavior
+
+- prototype-friendly mode stores the uploaded image as a data URL
+- production recommendation: move image storage to S3, Cloudinary, or another object store and save only the returned URL in the database
+
+## Feature Modules
+
+### Inventory and operations
+
+- dashboard
+- products
+- warehouses
+- operations
+- alerts
+- forecast
+- audit
+- media
+- scanner
+- PWA
+- permissions
+- localization
+- collaboration
+- analytics
+- integrations
+- release controls
+- quality
+- design system
+
+Some of these modules are frontend-rich surfaces prepared for deeper backend integration over time.
+
+## Local Development ??
+
+### Prerequisites
+
+- `Node.js 18+`
+- `npm`
+- `PostgreSQL`
+
+## Environment Variables
+
+### Root `.env.local`
+
+```env
+NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
+NEXT_PUBLIC_APP_ENV=development
+```
+
+If `NEXT_PUBLIC_GRAPHQL_URL` is not set, the frontend falls back to the built-in Apollo mock backend.
+
+### `backend/.env`
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/commodex?schema=public"
+JWT_SECRET="your-long-random-secret"
+JWT_EXPIRES_IN="1d"
+JWT_REFRESH_EXPIRES_DAYS="14"
+PORT=4000
+NODE_ENV="development"
+```
+
+## Installation
+
+### 1. Install frontend dependencies
 
 ```bash
 npm install
 ```
 
-## 2. Install backend dependencies
+### 2. Install backend dependencies
 
 ```bash
 cd backend
 npm install
 ```
 
-## 3. Configure environment variables
-
-### Root frontend `.env.local`
-
-```env
-NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
-```
-
-If this variable is omitted, the frontend uses the local mock Apollo backend instead.
-
-### Backend `.env`
-
-Example:
-
-```env
-DATABASE_URL="file:./dev.db"
-JWT_SECRET="change-this-in-real-environments"
-PORT=4000
-```
-
-## 4. Prepare Prisma
-
-From `backend/`:
+### 3. Generate Prisma client
 
 ```bash
 npm run prisma:generate
-npm run prisma:migrate
-npm run prisma:seed
 ```
 
-If `prisma migrate` is not usable in your environment, use:
+### 4. Apply database migrations
 
 ```bash
-npx prisma db push
+npm run prisma:deploy
+```
+
+For local iterative schema sync, you can use:
+
+```bash
+npm run prisma:push
+```
+
+### 5. Seed demo data
+
+```bash
 npm run prisma:seed
 ```
 
-## 5. Start backend
-
-From `backend/`:
+### 6. Start the backend
 
 ```bash
 npm run start:dev
 ```
 
-GraphQL endpoint:
+Backend endpoint:
 
 ```text
 http://localhost:4000/graphql
 ```
 
-## 6. Start frontend
+### 7. Start the frontend
 
-From repo root:
+From the repository root:
 
 ```bash
 npm run dev
 ```
 
-Frontend URL:
+Frontend endpoint:
 
 ```text
 http://localhost:3000
 ```
 
-## Frontend Scripts
+## Demo Accounts ??
 
-From repo root:
+Seeded accounts created by `backend/prisma/seed.ts`:
 
-- `npm run dev`: start Next.js dev server
-- `npm run build`: production build
-- `npm run start`: start production server
-- `npm run lint`: lint frontend
+| Role | Email | Password |
+| --- | --- | --- |
+| Manager | `manager@comodex.io` | `password123` |
+| Store Keeper | `storekeeper@comodex.io` | `password123` |
 
-## Backend Scripts
+You can also register new users from the signup page.
 
-From `backend/`:
+## Available Scripts
 
-- `npm run start`: start NestJS
-- `npm run start:dev`: start NestJS in watch mode
-- `npm run build`: compile backend
-- `npm run prisma:generate`: generate Prisma client
-- `npm run prisma:migrate`: run development migration
-- `npm run prisma:seed`: seed database
+### Root
 
-## Demo Usage
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm test
+```
 
-If you are using the mock frontend mode, the login page supports demo flows directly.
+### Backend
 
-If you are using the real backend, seed users created by `backend/prisma/seed.ts` should be used. Check that file for the exact demo users and roles available in your local database.
+```bash
+cd backend
+npm run start
+npm run start:dev
+npm run start:prod
+npm run build
+npm test
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:deploy
+npm run prisma:push
+npm run prisma:seed
+```
 
-## UI and UX Notes
+## Testing ??
 
-The frontend is designed with:
+Current automated coverage includes lightweight smoke tests.
 
-- responsive desktop and mobile layouts
-- touch-friendly actions in the products section
-- optimistic interactions for faster inventory actions
-- dark mode support using Tailwind `dark:` variants
-- animation kept lightweight to avoid scroll jank
+### Frontend
 
-## Error Handling
+```bash
+npm test
+```
 
-### User-facing layer
+### Backend
 
-- friendly error messages
-- retry actions where useful
-- reference IDs for support/debugging
+```bash
+cd backend
+npm test
+```
 
-### Developer-facing layer
+Recommended next testing upgrades:
+
+- unit tests for auth, guards, and services
+- GraphQL integration tests
+- end-to-end flows with Playwright
+- visual regression tests for critical UI surfaces
+
+## Error Handling ??
+
+Comodex uses two levels of error handling.
+
+### User-facing
+
+- clear, safe messages
+- retry actions where practical
+- error reference IDs for support
+
+### Developer-facing
 
 - normalized error objects
-- scoped error reporting
-- Apollo GraphQL/network interception
-- local browser diagnostics in `dev-error-log`
+- Apollo error interception
+- console diagnostics
+- local browser diagnostic logging via `dev-error-log`
+
+## UI/UX Notes ??
+
+- light mode is the default theme
+- dark mode is optional and persisted in local storage
+- product search uses an intentional command-palette overlay
+- mobile navigation includes bottom-nav shortcuts and a responsive menu
+- action buttons are optimized for faster response and smoother tap behavior
+
+## Deployment Notes ??
+
+### Frontend
+
+- deploy on Vercel
+- set `NEXT_PUBLIC_GRAPHQL_URL` to your backend GraphQL endpoint
+
+### Backend
+
+- deploy on Render or another Node host
+- set the service root to `backend`
+- use PostgreSQL in production
+- run migrations before starting the service:
+
+```bash
+npm run prisma:deploy
+npm run prisma:seed
+npm run start:prod
+```
+
+### Important
+
+SQLite is not the production target for the current codebase. Use PostgreSQL for real deployments.
 
 ## Troubleshooting
 
-## Unauthorized GraphQL errors in frontend
+### `The table main.User does not exist`
 
-If the frontend points to the real backend and the session token is missing or expired:
+Your database has not been migrated correctly or is still pointed at an old SQLite-style setup.
 
-- protected queries are skipped until auth is ready
-- invalid sessions are cleared automatically
-- user is redirected back to login
+Fix:
 
-If you still see stale behavior in development, restart the dev server.
+```bash
+cd backend
+npm run prisma:generate
+npm run prisma:deploy
+npm run prisma:seed
+```
 
-## Next.js chunk error
+Also verify `DATABASE_URL` points to PostgreSQL.
 
-If you hit an error like:
+### Next.js stale chunk error
+
+If you see an error like:
 
 ```text
 Cannot find module './682.js'
 ```
 
-Clear the Next.js build cache:
+Clear the Next cache:
 
 ```bash
 node -e "const fs=require('fs'); fs.rmSync('.next',{recursive:true,force:true})"
 npm run dev
 ```
 
-## Git and environment files
+### Unauthorized GraphQL errors
 
-The project ignores environment files via `.gitignore`. If a secret file was committed before that rule existed, remove it from git tracking explicitly.
+This usually means:
 
-## Suggested Next Steps
+- missing token
+- expired token
+- backend not running
+- wrong `NEXT_PUBLIC_GRAPHQL_URL`
 
-To take this to production quality, the next logical backend/frontend upgrades are:
+The app clears invalid sessions automatically and redirects to login when needed.
 
-1. replace local token storage with secure HTTP-only cookie auth
-2. add refresh token flow
-3. add request validation DTOs consistently across all modules
-4. add automated tests for frontend and backend
-5. add warehouse, alerts, and analytics backend modules to match the frontend feature surface
-6. move from SQLite dev setup to PostgreSQL for shared environments
+## Production Upgrade Path
+
+Recommended next upgrades:
+
+1. move product image uploads to object storage
+2. switch auth to secure HTTP-only cookie sessions
+3. add deeper integration and e2e tests
+4. add CI/CD checks for build, tests, and migrations
+5. add pagination/filtering/sorting at API level for very large inventories
+6. add observability with structured logs and error monitoring
 
 ## License
 

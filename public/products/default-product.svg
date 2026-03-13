@@ -1,0 +1,9 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="40" fill="#EEF4F8"/>
+  <rect x="60" y="60" width="1080" height="780" rx="34" fill="#F9FCFE"/>
+  <rect x="300" y="192" width="600" height="420" rx="42" fill="#DCEAF2"/>
+  <rect x="360" y="252" width="480" height="300" rx="32" fill="#C8DCE8"/>
+  <path d="M444 458L546 356L642 438L708 382L792 492" stroke="#6B8EA3" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="504" cy="332" r="34" fill="#89AABD"/>
+  <text x="600" y="728" text-anchor="middle" fill="#4B6473" font-family="Verdana, sans-serif" font-size="58" font-weight="700">Product Image</text>
+</svg>

@@ -80,6 +80,7 @@ model Product {
   id              String             @id
   name            String
   category        String
+  imageUrl        String?
   unitPrice       Float
   quantity        Int                @default(0)
   reorderLevel    Int                @default(40)

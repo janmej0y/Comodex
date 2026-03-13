@@ -12,6 +12,9 @@ export class ProductModel {
   @Field()
   category!: string;
 
+  @Field({ nullable: true })
+  imageUrl?: string;
+
   @Field(() => Float)
   unitPrice!: number;
 

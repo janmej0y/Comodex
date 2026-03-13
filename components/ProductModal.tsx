@@ -13,6 +13,7 @@ interface ProductFormInput {
   id: string;
   name: string;
   category: string;
+  imageUrl?: string | null;
   unitPrice: number;
   quantity: number;
   reorderLevel: number;
@@ -29,6 +30,7 @@ interface FormState {
   id: string;
   name: string;
   category: string;
+  imageUrl: string;
   unitPrice: string;
   quantity: string;
 }
@@ -37,6 +39,7 @@ const emptyState: FormState = {
   id: "",
   name: "",
   category: "",
+  imageUrl: "",
   unitPrice: "",
   quantity: ""
 };
@@ -59,6 +62,7 @@ export default function ProductModal({ product, isOpen, onClose, onSubmit }: Pro
       id: product.id,
       name: product.name,
       category: product.category,
+      imageUrl: product.imageUrl ?? "",
       unitPrice: String(product.unitPrice),
       quantity: String(product.quantity)
     });
@@ -76,6 +80,7 @@ export default function ProductModal({ product, isOpen, onClose, onSubmit }: Pro
           id: product.id,
           name: product.name,
           category: product.category,
+          imageUrl: product.imageUrl ?? "",
           unitPrice: String(product.unitPrice),
           quantity: String(product.quantity)
         }
@@ -140,6 +145,7 @@ export default function ProductModal({ product, isOpen, onClose, onSubmit }: Pro
         id: form.id.trim(),
         name: form.name.trim(),
         category: form.category.trim(),
+        imageUrl: form.imageUrl.trim() || undefined,
         unitPrice,
         quantity,
         reorderLevel: product?.reorderLevel ?? 40
@@ -209,6 +215,73 @@ export default function ProductModal({ product, isOpen, onClose, onSubmit }: Pro
                 <span className="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Name</span>
                 <Input value={form.name} onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))} />
               </label>
+
+              <div className="space-y-2 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-800 dark:bg-slate-950/40">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Product Photo</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Optional. Upload a JPG, PNG, or WEBP up to 2 MB.</p>
+                  </div>
+                  {form.imageUrl ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="px-3 py-2 text-xs"
+                      onClick={() => setForm((prev) => ({ ...prev, imageUrl: "" }))}
+                    >
+                      Remove
+                    </Button>
+                  ) : null}
+                </div>
+
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <label className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-500 dark:hover:text-brand-200">
+                    Upload Image
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                      className="sr-only"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        event.currentTarget.value = "";
+
+                        if (!file) {
+                          return;
+                        }
+
+                        if (file.size > 2 * 1024 * 1024) {
+                          setError("Please upload an image smaller than 2 MB.");
+                          return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          setError(null);
+                          setForm((prev) => ({
+                            ...prev,
+                            imageUrl: typeof reader.result === "string" ? reader.result : prev.imageUrl
+                          }));
+                        };
+                        reader.onerror = () => setError("Image upload failed. Try another file.");
+                        reader.readAsDataURL(file);
+                      }}
+                    />
+                  </label>
+
+                  <Input
+                    value={form.imageUrl}
+                    onChange={(event) => setForm((prev) => ({ ...prev, imageUrl: event.target.value }))}
+                    placeholder="Or paste an image URL"
+                  />
+                </div>
+
+                {form.imageUrl ? (
+                  <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={form.imageUrl} alt="Product preview" className="h-48 w-full object-cover" />
+                  </div>
+                ) : null}
+              </div>
 
               <div className="grid gap-3 md:grid-cols-2">
                 <label className="block space-y-1">

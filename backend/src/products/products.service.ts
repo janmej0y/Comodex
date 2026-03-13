@@ -117,6 +117,7 @@ export class ProductsService {
         update: {
           name: input.name,
           category: input.category,
+          imageUrl: input.imageUrl,
           unitPrice: input.unitPrice,
           reorderLevel: input.reorderLevel
         },
@@ -124,6 +125,7 @@ export class ProductsService {
           id: input.id,
           name: input.name,
           category: input.category,
+          imageUrl: input.imageUrl,
           unitPrice: input.unitPrice,
           reorderLevel: input.reorderLevel,
           quantity: 0

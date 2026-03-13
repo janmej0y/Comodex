@@ -46,6 +46,7 @@ interface ProductFormInput {
   id: string;
   name: string;
   category: string;
+  imageUrl?: string | null;
   unitPrice: number;
   quantity: number;
   reorderLevel: number;

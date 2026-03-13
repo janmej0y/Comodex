@@ -20,12 +20,12 @@ export default function MobileBottomNav({ role }: { role: Role }) {
               key={item.href}
               href={item.href}
               className={[
-                "flex flex-col items-center justify-center rounded-lg px-1 py-1.5 text-[10px] font-medium",
+                "flex min-h-[60px] flex-col items-center justify-center rounded-xl px-1 py-1.5 text-[9px] font-medium leading-tight",
                 active ? "bg-brand-600 text-white" : "text-slate-600 dark:text-slate-300"
               ].join(" ")}
             >
               <Icon className="mb-0.5 h-3.5 w-3.5" />
-              {item.label.slice(0, 8)}
+              <span className="text-center">{item.label}</span>
             </Link>
           );
         })}

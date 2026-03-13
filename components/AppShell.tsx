@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CircleHelp, Menu } from "lucide-react";
+import { CircleHelp, LogOut, Menu } from "lucide-react";
 import { useMemo, useState } from "react";
 import BackToTop from "@/components/BackToTop";
 import Sidebar from "@/components/Sidebar";
@@ -17,7 +17,7 @@ import { useAuth } from "@/lib/auth-context";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const items = useMemo(
@@ -46,7 +46,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
 
           {menuOpen ? (
-            <div className="mb-4 grid max-h-64 grid-cols-2 gap-2 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-3">
+            <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
+              <div className="mb-3 grid max-h-64 grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3">
               {items.map((item) => (
                 <Link
                   key={item.href}
@@ -62,6 +63,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </Link>
               ))}
+              </div>
+              <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-950/60">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{user?.email}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{user?.role?.replace("_", " ")}</p>
+                </div>
+                <Button
+                  variant="danger"
+                  className="shrink-0"
+                  onClick={async () => {
+                    setMenuOpen(false);
+                    await logout();
+                  }}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
             </div>
           ) : null}
 

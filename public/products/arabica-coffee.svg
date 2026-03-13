@@ -1,0 +1,17 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="40" fill="#F7F0E6"/>
+  <rect x="60" y="60" width="1080" height="780" rx="34" fill="#FFF8EF"/>
+  <ellipse cx="600" cy="640" rx="330" ry="110" fill="#E6D2B4"/>
+  <ellipse cx="600" cy="610" rx="280" ry="90" fill="#6B4028"/>
+  <ellipse cx="600" cy="600" rx="220" ry="68" fill="#7B4B2F"/>
+  <ellipse cx="490" cy="550" rx="58" ry="96" transform="rotate(-24 490 550)" fill="#5E351F"/>
+  <ellipse cx="596" cy="520" rx="58" ry="96" transform="rotate(6 596 520)" fill="#5A331E"/>
+  <ellipse cx="706" cy="552" rx="58" ry="96" transform="rotate(28 706 552)" fill="#5E351F"/>
+  <path d="M493 488C512 530 507 588 487 620" stroke="#8E5C3A" stroke-width="16" stroke-linecap="round"/>
+  <path d="M602 454C623 512 619 570 603 612" stroke="#8E5C3A" stroke-width="16" stroke-linecap="round"/>
+  <path d="M710 494C731 542 725 587 706 620" stroke="#8E5C3A" stroke-width="16" stroke-linecap="round"/>
+  <path d="M425 235C452 190 520 166 583 178C552 215 520 242 470 260" fill="#C47A3A"/>
+  <path d="M742 238C714 191 649 165 588 178C620 213 651 241 699 260" fill="#D48C46"/>
+  <path d="M510 135C542 109 593 96 641 111C610 142 569 160 531 166" fill="#375F39"/>
+  <text x="600" y="780" text-anchor="middle" fill="#50301F" font-family="Verdana, sans-serif" font-size="56" font-weight="700">Arabica Coffee Beans</text>
+</svg>

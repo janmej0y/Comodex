@@ -1,0 +1,18 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="40" fill="#F5F4E9"/>
+  <rect x="60" y="60" width="1080" height="780" rx="34" fill="#FFFDF4"/>
+  <ellipse cx="600" cy="662" rx="330" ry="108" fill="#E2DAC0"/>
+  <rect x="500" y="186" width="200" height="448" rx="86" fill="#668037"/>
+  <rect x="532" y="220" width="136" height="382" rx="58" fill="#7AA03B"/>
+  <path d="M575 123H625C650 123 670 143 670 168V214H530V168C530 143 550 123 575 123Z" fill="#33401F"/>
+  <rect x="560" y="90" width="80" height="54" rx="18" fill="#1F2716"/>
+  <rect x="542" y="330" width="116" height="138" rx="24" fill="#FFF2C7"/>
+  <circle cx="600" cy="400" r="42" fill="#B4C36A"/>
+  <ellipse cx="586" cy="394" rx="14" ry="22" transform="rotate(-18 586 394)" fill="#7AA03B"/>
+  <ellipse cx="614" cy="406" rx="14" ry="22" transform="rotate(16 614 406)" fill="#7AA03B"/>
+  <path d="M372 574C430 514 500 476 586 458" stroke="#A5B95D" stroke-width="18" stroke-linecap="round"/>
+  <path d="M826 560C772 511 713 479 636 459" stroke="#8EA44C" stroke-width="18" stroke-linecap="round"/>
+  <ellipse cx="356" cy="582" rx="30" ry="22" fill="#95A94D"/>
+  <ellipse cx="847" cy="566" rx="30" ry="22" fill="#95A94D"/>
+  <text x="600" y="788" text-anchor="middle" fill="#49592A" font-family="Verdana, sans-serif" font-size="56" font-weight="700">Cold-Pressed Olive Oil</text>
+</svg>

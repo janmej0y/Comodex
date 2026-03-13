@@ -1,0 +1,15 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="40" fill="#F6F0F4"/>
+  <rect x="60" y="60" width="1080" height="780" rx="34" fill="#FEF9FC"/>
+  <ellipse cx="600" cy="650" rx="350" ry="118" fill="#E8D7DE"/>
+  <path d="M418 642L504 404L660 356L756 442L712 648L524 698L418 642Z" fill="#E3B6C6"/>
+  <path d="M506 404L570 480L660 356" stroke="#F5D8E1" stroke-width="10" stroke-linecap="round"/>
+  <path d="M570 480L524 698" stroke="#C88BA0" stroke-width="10" stroke-linecap="round"/>
+  <path d="M660 356L756 442" stroke="#C88BA0" stroke-width="10" stroke-linecap="round"/>
+  <path d="M570 480L712 648" stroke="#F5D8E1" stroke-width="10" stroke-linecap="round"/>
+  <path d="M362 602L432 498L530 520L496 654L386 682L362 602Z" fill="#F0CAD5"/>
+  <path d="M730 618L790 486L906 514L880 664L760 698L730 618Z" fill="#D89AAD"/>
+  <path d="M874 330C818 230 699 170 568 188C621 274 695 348 786 390" fill="#9AC3D9"/>
+  <path d="M402 332C458 232 578 170 712 188C658 274 585 347 494 390" fill="#B1D4E6"/>
+  <text x="600" y="785" text-anchor="middle" fill="#6F4B5D" font-family="Verdana, sans-serif" font-size="56" font-weight="700">Himalayan Rock Salt</text>
+</svg>

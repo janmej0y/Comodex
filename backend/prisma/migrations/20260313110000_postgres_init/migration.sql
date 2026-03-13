@@ -52,6 +52,7 @@ CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "category" TEXT NOT NULL,
+    "imageUrl" TEXT,
     "unitPrice" DOUBLE PRECISION NOT NULL,
     "quantity" INTEGER NOT NULL DEFAULT 0,
     "reorderLevel" INTEGER NOT NULL DEFAULT 40,

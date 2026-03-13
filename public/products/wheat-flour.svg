@@ -1,0 +1,18 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="40" fill="#F8F4E8"/>
+  <rect x="60" y="60" width="1080" height="780" rx="34" fill="#FFFCF3"/>
+  <ellipse cx="600" cy="652" rx="340" ry="116" fill="#E8DBC0"/>
+  <path d="M360 620C360 540 460 470 600 470C740 470 840 540 840 620C840 700 740 752 600 752C460 752 360 700 360 620Z" fill="#F2E6CF"/>
+  <path d="M420 592C463 558 529 540 598 540C667 540 733 558 780 592C734 623 669 642 598 642C527 642 460 623 420 592Z" fill="#E9D6B5"/>
+  <path d="M510 258L534 182" stroke="#CA9E4B" stroke-width="16" stroke-linecap="round"/>
+  <path d="M580 274L600 158" stroke="#D4AA52" stroke-width="16" stroke-linecap="round"/>
+  <path d="M648 258L670 182" stroke="#CA9E4B" stroke-width="16" stroke-linecap="round"/>
+  <path d="M528 214C482 226 451 252 439 292C483 280 515 255 528 214Z" fill="#E0B654"/>
+  <path d="M551 246C505 258 474 284 462 324C506 312 538 287 551 246Z" fill="#E9C362"/>
+  <path d="M619 194C664 206 696 231 709 271C665 260 632 234 619 194Z" fill="#E0B654"/>
+  <path d="M642 226C687 238 718 264 731 304C687 292 654 267 642 226Z" fill="#E9C362"/>
+  <rect x="468" y="310" width="264" height="168" rx="28" fill="#FFF6E7" stroke="#E4D2B4" stroke-width="10"/>
+  <text x="600" y="384" text-anchor="middle" fill="#7D5D2E" font-family="Verdana, sans-serif" font-size="42" font-weight="700">Premium</text>
+  <text x="600" y="432" text-anchor="middle" fill="#7D5D2E" font-family="Verdana, sans-serif" font-size="42" font-weight="700">Wheat Flour</text>
+  <text x="600" y="804" text-anchor="middle" fill="#6F5833" font-family="Verdana, sans-serif" font-size="56" font-weight="700">Stone-Ground Batch</text>
+</svg>
