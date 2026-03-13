@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMutation } from "@apollo/client";
 import { usePathname, useRouter } from "next/navigation";
@@ -10,15 +10,17 @@ import {
   useMemo,
   useState
 } from "react";
-import { LOGIN_USER } from "@/lib/graphql";
+import { LOGIN_USER, LOGOUT_USER, REFRESH_SESSION, SIGNUP_USER } from "@/lib/graphql";
 import { LoginInput, Role, User } from "@/types/auth";
 
 interface AuthContextValue {
   user: User | null;
   token: string | null;
+  refreshToken: string | null;
   isBootstrapping: boolean;
+  signup: (input: { name: string; email: string; password: string; role: Role }) => Promise<User>;
   login: (input: LoginInput) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   canAccess: (roles?: Role[]) => boolean;
 }
 
@@ -29,25 +31,47 @@ const AUTH_STORAGE_KEY = "commodex-session";
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
+  const [mutateSignup] = useMutation(SIGNUP_USER);
   const [mutateLogin] = useMutation(LOGIN_USER);
+  const [mutateRefresh] = useMutation(REFRESH_SESSION);
+  const [mutateLogout] = useMutation(LOGOUT_USER);
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    const serialized = window.localStorage.getItem(AUTH_STORAGE_KEY);
-    if (serialized) {
+    const bootstrap = async () => {
+      const serialized = window.localStorage.getItem(AUTH_STORAGE_KEY);
+      if (!serialized) {
+        setIsBootstrapping(false);
+        return;
+      }
+
       try {
-        const parsed = JSON.parse(serialized) as { user: User; token: string };
+        const parsed = JSON.parse(serialized) as { user: User; token: string; refreshToken?: string };
         setUser(parsed.user);
         setToken(parsed.token);
+        setRefreshToken(parsed.refreshToken ?? null);
+
+        if (!parsed.token && parsed.refreshToken) {
+          const { data } = await mutateRefresh({ variables: { input: { refreshToken: parsed.refreshToken } } });
+          const next = data?.refreshSession;
+          if (next?.token && next?.user) {
+            setUser(next.user);
+            setToken(next.token);
+            setRefreshToken(next.refreshToken);
+          }
+        }
       } catch {
         window.localStorage.removeItem(AUTH_STORAGE_KEY);
+      } finally {
+        setIsBootstrapping(false);
       }
-    }
+    };
 
-    setIsBootstrapping(false);
-  }, []);
+    void bootstrap();
+  }, [mutateRefresh]);
 
   useEffect(() => {
     if (isBootstrapping) {
@@ -62,21 +86,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user, token }));
-  }, [isBootstrapping, pathname, router, token, user]);
+    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user, token, refreshToken }));
+  }, [isBootstrapping, pathname, refreshToken, router, token, user]);
 
   const login = useCallback(
     async (input: LoginInput) => {
       const { data } = await mutateLogin({ variables: { input } });
       const nextUser = data?.login?.user as User;
       const nextToken = data?.login?.token as string;
+      const nextRefreshToken = data?.login?.refreshToken as string;
 
-      if (!nextUser || !nextToken) {
+      if (!nextUser || !nextToken || !nextRefreshToken) {
         throw new Error("Login failed.");
       }
 
       setUser(nextUser);
       setToken(nextToken);
+      setRefreshToken(nextRefreshToken);
 
       if (nextUser.role === Role.MANAGER) {
         router.replace("/dashboard");
@@ -87,12 +113,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [mutateLogin, router]
   );
 
-  const logout = useCallback(() => {
+  const signup = useCallback(
+    async (input: { name: string; email: string; password: string; role: Role }) => {
+      const { data } = await mutateSignup({ variables: { input } });
+      const nextUser = data?.signup as User;
+
+      if (!nextUser) {
+        throw new Error("Signup failed.");
+      }
+
+      return nextUser;
+    },
+    [mutateSignup]
+  );
+
+  const logout = useCallback(async () => {
+    const currentRefreshToken = refreshToken;
+
     setUser(null);
     setToken(null);
+    setRefreshToken(null);
     window.localStorage.removeItem(AUTH_STORAGE_KEY);
+
+    if (currentRefreshToken) {
+      try {
+        await mutateLogout({ variables: { refreshToken: currentRefreshToken } });
+      } catch {
+        // Session is already cleared locally.
+      }
+    }
+
     router.replace("/");
-  }, [router]);
+  }, [mutateLogout, refreshToken, router]);
 
   const canAccess = useCallback(
     (roles?: Role[]) => {
@@ -110,8 +162,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ user, token, isBootstrapping, login, logout, canAccess }),
-    [canAccess, isBootstrapping, login, logout, token, user]
+    () => ({ user, token, refreshToken, isBootstrapping, signup, login, logout, canAccess }),
+    [canAccess, isBootstrapping, login, logout, refreshToken, signup, token, user]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -125,3 +177,4 @@ export function useAuth() {
 
   return context;
 }
+

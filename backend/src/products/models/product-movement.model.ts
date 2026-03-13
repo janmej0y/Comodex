@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+﻿import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { MovementTypeEnum } from "../../common/enums/movement-type.enum";
 
 @ObjectType()
@@ -12,8 +12,11 @@ export class ProductMovementModel {
   @Field(() => MovementTypeEnum)
   type!: MovementTypeEnum;
 
-  @Field()
+  @Field(() => Int)
   quantity!: number;
+
+  @Field({ nullable: true })
+  warehouseId?: string;
 
   @Field()
   reason!: string;
@@ -21,3 +24,4 @@ export class ProductMovementModel {
   @Field()
   createdAt!: Date;
 }
+

@@ -1,5 +1,5 @@
-import { Field, Float, InputType, Int } from "@nestjs/graphql";
-import { IsInt, IsNumber, IsPositive, IsString, Min } from "class-validator";
+﻿import { Field, Float, InputType, Int } from "@nestjs/graphql";
+import { IsInt, IsNumber, IsOptional, IsPositive, IsString, Min } from "class-validator";
 
 @InputType()
 export class UpsertProductInput {
@@ -24,4 +24,15 @@ export class UpsertProductInput {
   @IsInt()
   @Min(0)
   quantity!: number;
+
+  @Field(() => Int, { defaultValue: 40 })
+  @IsInt()
+  @Min(1)
+  reorderLevel: number = 40;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  warehouseId?: string;
 }
+

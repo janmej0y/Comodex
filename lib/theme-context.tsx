@@ -22,10 +22,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const fallback: Theme = prefersDark ? "dark" : "light";
-    setTheme(fallback);
-    document.documentElement.classList.toggle("dark", fallback === "dark");
+    setTheme("light");
+    document.documentElement.classList.remove("dark");
   }, []);
 
   useEffect(() => {

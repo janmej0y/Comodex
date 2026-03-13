@@ -7,8 +7,11 @@
     "start:dev": "nest start --watch",
     "start:prod": "node dist/src/main.js",
     "build": "nest build",
+    "test": "node --test test/architecture.test.mjs",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:push": "prisma db push",
     "prisma:seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {

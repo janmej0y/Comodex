@@ -18,8 +18,11 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    const gqlContext = GqlExecutionContext.create(context);
-    const user = gqlContext.getContext().req.user as { role?: RoleEnum } | undefined;
+    const contextType = context.getType<"http" | "graphql">();
+    const user =
+      contextType === "http"
+        ? (context.switchToHttp().getRequest().user as { role?: RoleEnum } | undefined)
+        : (GqlExecutionContext.create(context).getContext().req.user as { role?: RoleEnum } | undefined);
 
     return !!user?.role && requiredRoles.includes(user.role);
   }

@@ -1,34 +1,46 @@
-"use client";
+﻿"use client";
 
+import { useQuery } from "@apollo/client";
 import AppShell from "@/components/AppShell";
+import ErrorAlert from "@/components/ErrorAlert";
+import PageHeader from "@/components/PageHeader";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { useAuth } from "@/lib/auth-context";
+import { GET_AUDIT_TRAIL } from "@/lib/graphql";
+import { dateFormatter } from "@/lib/utils";
 import { Role } from "@/types/auth";
+import { AuditEvent } from "@/types/product";
 
-const logs = [
-  { actor: "manager@comodex.io", action: "Updated price for P-104", date: "Today 10:21" },
-  { actor: "store_keeper@comodex.io", action: "Adjusted qty for P-103", date: "Today 09:02" },
-  { actor: "manager@comodex.io", action: "Created PO-2210", date: "Yesterday 17:12" }
-];
+interface AuditResponse {
+  auditTrail: AuditEvent[];
+}
 
 export default function AuditPage() {
+  const { token, isBootstrapping } = useAuth();
+  const { data, error, refetch } = useQuery<AuditResponse>(GET_AUDIT_TRAIL, {
+    variables: { limit: 24 },
+    skip: isBootstrapping || !token
+  });
+
+  const logs = data?.auditTrail ?? [];
+
   return (
     <ProtectedRoute roles={[Role.MANAGER]}>
       <AppShell>
-        <Card>
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Audit & Compliance</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Immutable history with export-ready records.</p>
-        </Card>
+        <PageHeader title="Audit & Compliance" subtitle="Immutable history for auth, inventory, transfers, procurement, and alerts." />
+        {error ? <ErrorAlert title="Could not load audit trail" message="Audit data is unavailable." onRetry={() => refetch()} /> : null}
 
         <Card className="space-y-3">
           {logs.map((log) => (
-            <div key={`${log.actor}-${log.action}`} className="rounded-xl border border-slate-200 p-3 dark:border-slate-800">
+            <div key={log.id} className="rounded-2xl border border-slate-200/80 p-4 dark:border-slate-800">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{log.action}</p>
-                <Badge>{log.date}</Badge>
+                <Badge>{dateFormatter.format(new Date(log.createdAt))}</Badge>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{log.actor}</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{log.entityType} · {log.entityId}</p>
+              {log.metadata ? <p className="mt-2 break-all text-xs text-slate-500 dark:text-slate-400">{log.metadata}</p> : null}
             </div>
           ))}
         </Card>
@@ -36,3 +48,4 @@ export default function AuditPage() {
     </ProtectedRoute>
   );
 }
+

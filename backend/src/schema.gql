@@ -6,17 +6,56 @@ input AdjustStockInput {
   delta: Int!
   productId: String!
   reason: String!
+  warehouseId: String
+}
+
+type AlertRuleModel {
+  channel: String!
+  createdAt: DateTime!
+  id: String!
+  isActive: Boolean!
+  name: String!
+  productId: String
+  threshold: Int!
+  warehouseId: String
+}
+
+type AuditEventModel {
+  action: String!
+  actorId: String
+  createdAt: DateTime!
+  entityId: String!
+  entityType: String!
+  id: String!
+  metadata: String
 }
 
 type AuthPayload {
+  refreshToken: String!
   token: String!
   user: UserModel!
 }
 
+input CreatePurchaseOrderInput {
+  lines: [PurchaseOrderLineInput!]!
+  supplier: String!
+  warehouseId: String!
+}
+
 type DashboardStatsModel {
+  alertsTriggered: Int!
   lowInventory: Int!
   marketValue: Float!
+  pendingPurchaseOrders: Int!
+  receiptsTrend: [DashboardTrendPointModel!]!
   totalStock: Int!
+  warehouseCount: Int!
+  warehouseInsights: [WarehouseInsightModel!]!
+}
+
+type DashboardTrendPointModel {
+  label: String!
+  value: Float!
 }
 
 """
@@ -24,29 +63,73 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input GoodsReceiptLineInput {
+  productId: String!
+  quantity: Int!
+}
+
+type GoodsReceiptLineModel {
+  id: String!
+  productId: String!
+  quantity: Int!
+}
+
+type GoodsReceiptModel {
+  createdAt: DateTime!
+  id: String!
+  lines: [GoodsReceiptLineModel!]!
+  notes: String
+  purchaseOrderId: String!
+  reference: String!
+  warehouseId: String!
+}
+
 input LoginInput {
   email: String!
   password: String!
   role: Role!
 }
 
+type LowStockAlertModel {
+  productId: String!
+  productName: String!
+  quantity: Int!
+  severity: String!
+  threshold: Int!
+  warehouseId: String!
+  warehouseName: String!
+}
+
 enum MovementType {
   ADJUSTMENT
   IN
   OUT
+  RECEIPT
+  TRANSFER_IN
+  TRANSFER_OUT
 }
 
 type Mutation {
   adjustStock(input: AdjustStockInput!): ProductModel!
+  createPurchaseOrder(input: CreatePurchaseOrderInput!): PurchaseOrderModel!
   login(input: LoginInput!): AuthPayload!
+  logout(refreshToken: String!): Boolean!
+  receivePurchaseOrder(input: ReceivePurchaseOrderInput!): GoodsReceiptModel!
+  refreshSession(input: RefreshSessionInput!): AuthPayload!
+  saveAlertRule(input: SaveAlertRuleInput!): AlertRuleModel!
+  signup(input: SignupInput!): UserModel!
+  transferStock(input: TransferStockInput!): StockTransferModel!
   upsertProduct(input: UpsertProductInput!): ProductModel!
 }
 
 type ProductModel {
+  balances: [WarehouseBalanceModel!]!
   category: String!
   id: String!
+  lowStock: Boolean!
   name: String!
-  quantity: Float!
+  quantity: Int!
+  reorderLevel: Int!
   unitPrice: Float!
   updatedAt: DateTime!
 }
@@ -55,9 +138,10 @@ type ProductMovementModel {
   createdAt: DateTime!
   id: String!
   productId: String!
-  quantity: Float!
+  quantity: Int!
   reason: String!
   type: MovementType!
+  warehouseId: String
 }
 
 type ProductTrendPointModel {
@@ -65,12 +149,60 @@ type ProductTrendPointModel {
   value: Int!
 }
 
+input PurchaseOrderLineInput {
+  productId: String!
+  quantityOrdered: Int!
+  unitPrice: Float!
+}
+
+type PurchaseOrderLineModel {
+  id: String!
+  productId: String!
+  quantityOrdered: Int!
+  quantityReceived: Int!
+  unitPrice: Float!
+}
+
+type PurchaseOrderModel {
+  createdAt: DateTime!
+  id: String!
+  lines: [PurchaseOrderLineModel!]!
+  reference: String!
+  status: PurchaseOrderStatus!
+  supplier: String!
+  warehouseId: String!
+}
+
+enum PurchaseOrderStatus {
+  APPROVED
+  DRAFT
+  PARTIALLY_RECEIVED
+  RECEIVED
+}
+
 type Query {
+  alertRules: [AlertRuleModel!]!
+  auditTrail(limit: Int = 30): [AuditEventModel!]!
   dashboardStats: DashboardStatsModel!
+  goodsReceipts: [GoodsReceiptModel!]!
+  lowStockAlerts: [LowStockAlertModel!]!
   product(id: String!): ProductModel
   productMovements(productId: String!): [ProductMovementModel!]!
   productTrend(productId: String!): [ProductTrendPointModel!]!
   products: [ProductModel!]!
+  purchaseOrders: [PurchaseOrderModel!]!
+  stockTransfers: [StockTransferModel!]!
+  warehouses: [WarehouseModel!]!
+}
+
+input ReceivePurchaseOrderInput {
+  lines: [GoodsReceiptLineInput!]!
+  notes: String
+  purchaseOrderId: String!
+}
+
+input RefreshSessionInput {
+  refreshToken: String!
 }
 
 enum Role {
@@ -78,12 +210,55 @@ enum Role {
   STORE_KEEPER
 }
 
+input SaveAlertRuleInput {
+  channel: String!
+  id: String
+  isActive: Boolean! = true
+  name: String!
+  productId: String
+  threshold: Int!
+  warehouseId: String
+}
+
+input SignupInput {
+  email: String!
+  name: String!
+  password: String!
+  role: Role!
+}
+
+type StockTransferModel {
+  createdAt: DateTime!
+  fromWarehouseId: String!
+  id: String!
+  productId: String!
+  quantity: Int!
+  reference: String!
+  status: TransferStatus!
+  toWarehouseId: String!
+}
+
+enum TransferStatus {
+  COMPLETED
+  PENDING
+}
+
+input TransferStockInput {
+  fromWarehouseId: String!
+  productId: String!
+  quantity: Int!
+  reason: String!
+  toWarehouseId: String!
+}
+
 input UpsertProductInput {
   category: String!
   id: String!
   name: String!
   quantity: Int!
+  reorderLevel: Int! = 40
   unitPrice: Float!
+  warehouseId: String
 }
 
 type UserModel {
@@ -91,4 +266,27 @@ type UserModel {
   id: String!
   name: String!
   role: Role!
+}
+
+type WarehouseBalanceModel {
+  quantity: Int!
+  warehouseCode: String!
+  warehouseId: String!
+  warehouseName: String!
+}
+
+type WarehouseInsightModel {
+  lowStockSkus: Int!
+  totalUnits: Int!
+  warehouseId: String!
+  warehouseName: String!
+}
+
+type WarehouseModel {
+  city: String!
+  code: String!
+  id: String!
+  lowStockSkus: Int!
+  name: String!
+  totalUnits: Int!
 }

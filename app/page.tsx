@@ -15,13 +15,16 @@ import { useTheme } from "@/lib/theme-context";
 import { Role } from "@/types/auth";
 
 export default function LoginPage() {
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("manager@comodex.io");
   const [password, setPassword] = useState("password123");
   const [role, setRole] = useState<Role>(Role.MANAGER);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [errorId, setErrorId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const { user, login } = useAuth();
+  const { user, login, signup } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
 
@@ -47,25 +50,61 @@ export default function LoginPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+    setNotice(null);
 
-    if (!email.trim() || !password.trim()) {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedEmail || !password.trim()) {
       setError("Email and password are required.");
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(normalizedEmail)) {
+      setError("Use a valid email address.");
+      return;
+    }
+
+    if (password.trim().length < 6) {
+      setError("Password must be at least 6 characters.");
       return;
     }
 
     setLoading(true);
 
     try {
-      await login({ email: email.trim(), password: password.trim(), role });
+      if (mode === "signup") {
+        if (name.trim().length < 2) {
+          setError("Name must be at least 2 characters.");
+          setLoading(false);
+          return;
+        }
+
+        await signup({ name: name.trim(), email: normalizedEmail, password: password.trim(), role });
+        setMode("signin");
+        setError(null);
+        setNotice("Account created. Sign in with your new credentials.");
+        setPassword("");
+        localStorage.setItem("last-login-role", role);
+        localStorage.setItem("last-login-email", normalizedEmail);
+        trackEvent("auth_signup_success", { role });
+        return;
+      }
+
+      await login({ email: normalizedEmail, password: password.trim(), role });
       trackEvent("auth_login_success", { role });
       localStorage.setItem("last-login-role", role);
-      localStorage.setItem("last-login-email", email.trim());
+      localStorage.setItem("last-login-email", normalizedEmail);
     } catch (submitError) {
-      const normalized = normalizeError(submitError, "auth_login", "Authentication failed. Please verify and retry.");
+      const normalized = normalizeError(
+        submitError,
+        mode === "signup" ? "auth_signup" : "auth_login",
+        mode === "signup" ? "Signup failed. Please verify and retry." : "Authentication failed. Please verify and retry."
+      );
       setError(normalized.userMessage);
       setErrorId(normalized.id);
-      reportError(submitError, "auth_login", { role, email });
-      trackEvent("auth_login_error");
+      reportError(submitError, mode === "signup" ? "auth_signup" : "auth_login", { role, email });
+      trackEvent(mode === "signup" ? "auth_signup_error" : "auth_login_error");
     } finally {
       setLoading(false);
     }
@@ -101,15 +140,26 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-1 dark:border-slate-800 dark:bg-slate-950/60">
+            <Button type="button" variant={mode === "signin" ? "primary" : "ghost"} onClick={() => setMode("signin")}>
+              Sign In
+            </Button>
+            <Button type="button" variant={mode === "signup" ? "primary" : "ghost"} onClick={() => setMode("signup")}>
+              Sign Up
+            </Button>
+          </div>
+
           <div className="grid gap-2 sm:grid-cols-2">
             <Button
               type="button"
               variant="secondary"
               className="justify-start"
               onClick={() => {
+                setMode("signin");
                 setRole(Role.MANAGER);
                 setEmail("manager@comodex.io");
                 setPassword("password123");
+                setNotice("Demo manager account is for sign-in. Use a different email if you want to sign up.");
               }}
             >
               <UserCog className="h-4 w-4" />
@@ -120,15 +170,24 @@ export default function LoginPage() {
               variant="secondary"
               className="justify-start"
               onClick={() => {
+                setMode("signin");
                 setRole(Role.STORE_KEEPER);
                 setEmail("storekeeper@comodex.io");
                 setPassword("password123");
+                setNotice("Demo store keeper account is for sign-in. Use a different email if you want to sign up.");
               }}
             >
               <Warehouse className="h-4 w-4" />
               Use Store Keeper Demo
             </Button>
           </div>
+
+          {mode === "signup" ? (
+            <label className="block space-y-1">
+              <span className="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Full Name</span>
+              <Input value={name} onChange={(event) => setName(event.target.value)} />
+            </label>
+          ) : null}
 
           <label className="block space-y-1">
             <span className="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Email</span>
@@ -148,15 +207,20 @@ export default function LoginPage() {
             </Select>
           </label>
 
-          {error ? <ErrorAlert title="Sign-in failed" message={error} errorId={errorId ?? undefined} /> : null}
+          {notice ? <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">{notice}</p> : null}
+          {error ? <ErrorAlert title={mode === "signup" ? "Signup failed" : "Sign-in failed"} message={error} errorId={errorId ?? undefined} /> : null}
 
           <Button loading={loading} className="flex w-full items-center justify-center gap-2">
             <Box className="h-4 w-4" />
-            Sign In
+            {mode === "signup" ? "Create Account" : "Sign In"}
           </Button>
         </form>
 
-        <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">Tip: press Enter to sign in quickly. Demo password: `password123`.</p>
+        <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">
+          {mode === "signup"
+            ? "Create a manager or store keeper account first, then sign in."
+            : "Tip: press Enter to sign in quickly. Demo password: `password123`."}
+        </p>
       </motion.div>
     </div>
   );

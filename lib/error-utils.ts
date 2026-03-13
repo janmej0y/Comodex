@@ -21,6 +21,14 @@ function detectUserMessage(error: unknown, fallback: string) {
     return "The email, password, or role is incorrect.";
   }
 
+  if (/already exists|unique constraint/i.test(message)) {
+    return "An account with this email already exists. Sign in instead or use a different email.";
+  }
+
+  if (/does not exist in the current database|table .* does not exist/i.test(message)) {
+    return "The backend database is not initialized yet. Run Prisma deploy and seed, then try again.";
+  }
+
   if (/network|fetch|failed to fetch/i.test(message)) {
     return "We could not reach the server. Please try again in a moment.";
   }

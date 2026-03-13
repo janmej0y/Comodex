@@ -1,4 +1,4 @@
-export enum Role {
+﻿export enum Role {
   MANAGER = "MANAGER",
   STORE_KEEPER = "STORE_KEEPER"
 }
@@ -12,6 +12,7 @@ export interface User {
 
 export interface AuthState {
   token: string | null;
+  refreshToken: string | null;
   user: User | null;
 }
 
@@ -20,3 +21,4 @@ export interface LoginInput {
   password: string;
   role: Role;
 }
+

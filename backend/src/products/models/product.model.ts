@@ -1,4 +1,5 @@
-import { Field, Float, ObjectType } from "@nestjs/graphql";
+﻿import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { WarehouseBalanceModel } from "./warehouse-balance.model";
 
 @ObjectType()
 export class ProductModel {
@@ -14,9 +15,19 @@ export class ProductModel {
   @Field(() => Float)
   unitPrice!: number;
 
-  @Field()
+  @Field(() => Int)
   quantity!: number;
+
+  @Field(() => Int)
+  reorderLevel!: number;
+
+  @Field(() => Boolean)
+  lowStock!: boolean;
 
   @Field()
   updatedAt!: Date;
+
+  @Field(() => [WarehouseBalanceModel])
+  balances!: WarehouseBalanceModel[];
 }
+

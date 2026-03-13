@@ -7,6 +7,7 @@ import { LogOut, Moon, Sun } from "lucide-react";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import { NAV_ITEMS } from "@/lib/navigation";
+import { isManager } from "@/lib/access-control";
 import { useAuth } from "@/lib/auth-context";
 import { useTheme } from "@/lib/theme-context";
 
@@ -21,7 +22,7 @@ export default function Sidebar() {
   );
 
   return (
-    <aside className="relative hidden h-screen w-80 flex-col border-r border-slate-200/70 bg-white/75 p-5 backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-950/70 xl:flex">
+    <aside className="relative hidden h-screen w-80 flex-col border-r border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(248,250,252,0.82))] p-5 shadow-[0_28px_60px_-45px_rgba(15,23,42,0.5)] backdrop-blur-2xl dark:border-slate-800 dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.86),rgba(15,23,42,0.76))] xl:flex">
       <div className="mb-6 space-y-1">
         <h1 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Comodex</h1>
         <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Executive Operations Cloud</p>
@@ -53,11 +54,14 @@ export default function Sidebar() {
         </AnimatePresence>
       </nav>
 
-      <div className="mt-4 space-y-3 rounded-2xl border border-slate-200/80 bg-white/70 p-4 dark:border-slate-800 dark:bg-slate-900/70">
+        <div className="mt-4 space-y-3 rounded-3xl border border-white/80 bg-white/80 p-4 shadow-[0_22px_55px_-38px_rgba(15,23,42,0.45)] dark:border-slate-800 dark:bg-slate-900/70">
         <div>
           <p className="text-xs text-slate-500 dark:text-slate-400">Signed in as</p>
           <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{user?.email}</p>
           <p className="text-xs text-slate-500 dark:text-slate-400">{user?.role?.replace("_", " ")}</p>
+          {!isManager(user?.role) ? (
+            <p className="mt-1 text-[11px] text-amber-600 dark:text-amber-300">Dashboard and manager modules are restricted.</p>
+          ) : null}
         </div>
         <div className="flex gap-2">
           <Button onClick={toggleTheme} variant="secondary" className="flex-1 px-3 py-2 text-xs">

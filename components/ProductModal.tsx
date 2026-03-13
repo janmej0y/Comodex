@@ -9,11 +9,20 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { normalizeError, reportError } from "@/lib/error-utils";
 
+interface ProductFormInput {
+  id: string;
+  name: string;
+  category: string;
+  unitPrice: number;
+  quantity: number;
+  reorderLevel: number;
+}
+
 interface ProductModalProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (input: Omit<Product, "updatedAt">) => Promise<void>;
+  onSubmit: (input: ProductFormInput) => Promise<void>;
 }
 
 interface FormState {
@@ -132,7 +141,8 @@ export default function ProductModal({ product, isOpen, onClose, onSubmit }: Pro
         name: form.name.trim(),
         category: form.category.trim(),
         unitPrice,
-        quantity
+        quantity,
+        reorderLevel: product?.reorderLevel ?? 40
       });
       onClose();
     } catch (submitError) {

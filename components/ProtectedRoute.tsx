@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { ShieldAlert } from "lucide-react";
 import { Role } from "@/types/auth";
 import { useAuth } from "@/lib/auth-context";
 
@@ -34,8 +35,14 @@ export default function ProtectedRoute({ roles, children }: ProtectedRouteProps)
 
   if (isBootstrapping || !user || !canAccess(roles)) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100 text-slate-500 dark:bg-slate-950 dark:text-slate-300">
-        Checking access for {pathname}...
+      <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 text-slate-500 dark:bg-slate-950 dark:text-slate-300">
+        <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 text-center shadow-soft dark:border-slate-800 dark:bg-slate-900/85">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-300">
+            <ShieldAlert className="h-5 w-5" />
+          </div>
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">Checking access</p>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{pathname}</p>
+        </div>
       </div>
     );
   }

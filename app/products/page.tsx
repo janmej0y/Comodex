@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Download, Filter, ListFilter, Pencil, Plus, Search, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import AppShell from "@/components/AppShell";
 import ErrorAlert from "@/components/ErrorAlert";
 import PageHeader from "@/components/PageHeader";
@@ -17,6 +18,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Table, TableRoot, Td, Th } from "@/components/ui/Table";
 import { ADJUST_STOCK, GET_PRODUCTS, UPSERT_PRODUCT } from "@/lib/graphql";
+import { hasAccess } from "@/lib/access-control";
 import { normalizeError, reportError } from "@/lib/error-utils";
 import { trackEvent } from "@/lib/telemetry";
 import { useAuth } from "@/lib/auth-context";
@@ -38,6 +40,15 @@ interface UpsertResponse {
 
 interface AdjustResponse {
   adjustStock: Product;
+}
+
+interface ProductFormInput {
+  id: string;
+  name: string;
+  category: string;
+  unitPrice: number;
+  quantity: number;
+  reorderLevel: number;
 }
 
 interface ColumnState {
@@ -72,8 +83,10 @@ const PAGE_SIZE = 7;
 const LOW_STOCK_THRESHOLD = 40;
 
 export default function ProductsPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const { token, isBootstrapping } = useAuth();
+  const { token, isBootstrapping, user } = useAuth();
+  const canOpenDashboard = hasAccess(user?.role, "dashboard");
   const shouldSkipQuery = isBootstrapping || !token;
   const { data, loading, error, refetch } = useQuery<ProductsResponse>(GET_PRODUCTS, {
     skip: shouldSkipQuery
@@ -223,7 +236,7 @@ export default function ProductsPage() {
     setSortDir("asc");
   };
 
-  const handleSubmit = async (input: Omit<Product, "updatedAt">) => {
+  const handleSubmit = async (input: ProductFormInput) => {
     await upsertProduct({ variables: { input } });
     const action = editingProduct ? "Updated" : "Created";
 
@@ -364,6 +377,19 @@ export default function ProductsPage() {
             subtitle="Search, filter, and operate inventory at scale."
             actions={
               <>
+                <Button
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                  disabled={!canOpenDashboard}
+                  title={canOpenDashboard ? "Open dashboard" : "Dashboard is available to managers only"}
+                  onClick={() => {
+                    if (canOpenDashboard) {
+                      router.push("/dashboard");
+                    }
+                  }}
+                >
+                  Dashboard
+                </Button>
                 <Button variant="secondary" className="w-full sm:w-auto" onClick={exportCsv}>
                   <Download className="h-4 w-4" />
                   Export CSV
@@ -383,6 +409,11 @@ export default function ProductsPage() {
           />
 
           <Card className="space-y-4">
+            {!canOpenDashboard ? (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-3 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
+                Store Keeper access is active. Inventory actions are enabled, but the dashboard remains restricted to managers.
+              </div>
+            ) : null}
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950/60">
                 <p className="text-xs text-slate-500 dark:text-slate-400">Visible SKUs</p>
